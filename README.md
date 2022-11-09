@@ -1,3 +1,3 @@
-# MERN-Stack-User-Login-Registration
+# Video-Chat-App-MERN-STACK
 
-simple registration and login application using React,Node Js, Express and Mongo DB
+Video Chat Application Developed using MERN stack
