@@ -134,7 +134,6 @@ router.post("/login-user", (req, res) => {
  const { token } = req.body;
  try {
    const user = jwt.verify(token, process.env.JWT_SECRET);
-   console.log(user);
 
    const useremail = user.email;
    User.findOne({ email: useremail })
