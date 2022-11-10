@@ -104,19 +104,26 @@ router.post("/login-user", (req, res) => {
             if(data.length){
                 //User exists 
 
-                const hashedPassword = data[0].password
-                bcrypt.compare(password, hashedPassword).then(result => {
-                    if(result){
-                        //Password match
-                        const token = jwt.sign({ email: email }, process.env.JWT_SECRET)
-                        return res.json({ status: "ok", data: data, act: token })
-                    }else{
-                        return res.json({ status: "error", error: "Invalid Password" })
-                    }
-                })
-                .catch(e => {
-                    res.json({ status: "password match error"})
-                })
+                if(!data[0].verified)  {
+                    res.json({
+                        status: "FAILED",
+                        message: "email hasn't been verified yet. check your inbox"
+                    })
+                } else {
+                    const hashedPassword = data[0].password
+                    bcrypt.compare(password, hashedPassword).then(result => {
+                        if(result){
+                            //Password match
+                            const token = jwt.sign({ email: email }, process.env.JWT_SECRET)
+                            return res.json({ status: "ok", data: data, act: token })
+                        }else{
+                            return res.json({ status: "error", error: "Invalid Password" })
+                        }
+                    })
+                    .catch(e => {
+                        res.json({ status: "password match error"})
+                    })
+                }
             }else{
                 res.json({ status: "Invalid Credentials"})
             }
@@ -145,6 +152,81 @@ router.post("/login-user", (req, res) => {
      });
  } catch (error) {}
 });
+
+
+//verify otp email
+router.post("/verifyOTP", async (req, res) => {
+    try{
+
+        let { userId, otp } = req.body;
+        if(!userId || !otp) {
+            throw Error("Empty otp details are not allowed");
+        }else {
+            const UserOTPVerificationRecords = await UserOTPVerification.find({
+                userId,
+            });
+            if (UserOTPVerificationRecords.length <= 0) {
+                //no record found
+                throw new Error(
+                    "Account record doesn't exist or has been verified already. Please sing up or log in"
+                );
+            }else {
+                //user otp record exists
+                const { expiresAt } = UserOTPVerificationRecords[0];
+                const hashedOTP = UserOTPVerificationRecords[0].otp;
+                 
+                if (expiresAt < Date.now()) {
+                    //user otp record has expired
+                    await UserOTPVerification.deleteMany({ userId });
+                    throw new Error("code has expired. please request again");
+                }else {
+                   const validOTP = await bcrypt.compare(otp, hashedOTP);
+
+                   if(!validOTP) {
+                    //supplied otp is wrong
+                    throw new Error("invalid code passed.check your inbox");
+
+                   } else {
+                    //success
+                    await User.updateOne({ _id: userId }, {verified: true });
+                    await UserOTPVerification.deleteMany({ userId });
+                    res.json({
+                        status: "VERIFIED",
+                        message: "user email verified successfully",
+                    });
+                   }
+                }
+            }
+        }
+    }catch (error) {
+        res.json({
+            status: "FAILED",
+            message: error.message,
+        });
+    }
+});
+
+//resend verification
+router.post("/resendOTPVerificationCode", async (req, res) => {
+    try{
+        let { userId, email } = req.body;
+        
+        if( !userId || !email) {
+            throw Error("empty user details are not allowed");
+        } else {
+            //deleting existing records and re-send
+            await UserOTPVerification.deleteMany({ userId });
+            sendOTPVerificationEmail({_id: userId, email }, res);
+        }
+
+    }catch (error) {
+        res.json({
+            status: "FAILED",
+            message: error.message,
+        });
+    }
+});
+
 
 //Send otp verification email
 const sendOTPVerificationEmail = async ({ _id,email }, res) => {
