@@ -105,9 +105,21 @@ router.post("/login-user", (req, res) => {
                 //User exists 
 
                 if(!data[0].verified)  {
-                    res.json({
-                        status: "FAILED",
-                        message: "email hasn't been verified yet. check your inbox"
+
+                    const userId = data[0]._id ;
+
+                    UserOTPVerification.find({userId})
+                    .then( id => {
+                        if(id.length){
+
+                            res.json({
+                                status: "FAILED",
+                                message: "email hasn't been verified yet. check your inbox",
+                                iddata: id[0],
+                                data: data[0]
+                            
+                            })
+                        }
                     })
                 } else {
                     const hashedPassword = data[0].password

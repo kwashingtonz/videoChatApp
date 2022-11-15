@@ -29,10 +29,20 @@ export default class Login extends Component {
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "userRegister");
-        if (data.status == "ok") {
+        if (data.status === "FAILED") {
+          alert("email hasn't been verified yet. check your inbox");
+          window.localStorage.setItem("userdata", JSON.stringify(data.data));
+          window.localStorage.setItem("otpdata", JSON.stringify(data.iddata));
+          window.location.href = "./verifyOTP";
+        } else if (data.status === "ok") {
           alert("login successful");
           window.localStorage.setItem("token", data.act);
           window.location.href = "./userDetails";
+        } else if(data.status === "Invalid Credentials"){
+          alert("Email or password not matching");
+
+        }else if (email === "" || password === "" ){
+          alert("please enter email and password");
         }
       });
   }

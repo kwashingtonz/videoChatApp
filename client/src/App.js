@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./components/login_component";
 import SignUp from "./components/signup_component";
 import UserDetails from "./components/userDetails";
+import VerifyOTP from "./components/verifyOTP";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               <Route path="/sign-in" element={<Login />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/userDetails" element={<UserDetails />} />
+              <Route path="/verifyOTP" element={<VerifyOTP />} />
             </Routes>
           </div>
         </div>
