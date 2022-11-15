@@ -202,9 +202,17 @@ router.post("/verifyOTP", async (req, res) => {
                     //success
                     await User.updateOne({ _id: userId }, {verified: true });
                     await UserOTPVerification.deleteMany({ userId });
-                    res.json({
-                        status: "VERIFIED",
-                        message: "user email verified successfully",
+                    const _id = userId;
+                    
+                    User.find({_id})
+                    .then( data => {
+                        if(data.length){
+                            const token = jwt.sign({ email: data[0].email }, process.env.JWT_SECRET)
+                            res.json({
+                                status: "VERIFIED",
+                                message: "user email verified successfully",
+                            })
+                        }
                     });
                    }
                 }

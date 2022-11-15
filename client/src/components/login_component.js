@@ -31,12 +31,12 @@ export default class Login extends Component {
         console.log(data, "userRegister");
         if (data.status === "FAILED") {
           alert("email hasn't been verified yet. check your inbox");
-          window.localStorage.setItem("userdata", JSON.stringify(data.data));
-          window.localStorage.setItem("otpdata", JSON.stringify(data.iddata));
+          window.sessionStorage.setItem("userdata", JSON.stringify(data.data));
+          window.sessionStorage.setItem("otpdata", JSON.stringify(data.iddata));
           window.location.href = "./verifyOTP";
         } else if (data.status === "ok") {
           alert("login successful");
-          window.localStorage.setItem("token", data.act);
+          window.sessionStorage.setItem("token", data.act);
           window.location.href = "./userDetails";
         } else if(data.status === "Invalid Credentials"){
           alert("Email or password not matching");

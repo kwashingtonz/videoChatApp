@@ -15,8 +15,8 @@ export default class VerifyOTP extends Component {
 
   componentDidMount() {
 
-    const userData = JSON.parse(window.localStorage.getItem("userdata"));
-    const otpData = JSON.parse(window.localStorage.getItem("otpdata"));
+    const userData = JSON.parse(window.sessionStorage.getItem("userdata"));
+    const otpData = JSON.parse(window.sessionStorage.getItem("otpdata"));
 
     this.setState({otp:otpData, user:userData}); 
 
@@ -34,7 +34,7 @@ export default class VerifyOTP extends Component {
 
         <div className="mb-3">
           <label>Your Email</label>
-           <h3>{this.state.user.email}</h3>
+           <h4>{this.state.user.email}</h4>
           <input
             type="text"
             className="form-control"
