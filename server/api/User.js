@@ -66,7 +66,7 @@ router.post("/register", (req, res) => {
 
                 newUser.save().then(result => {
                     
-                    sendOTPVerificationEmail(result, res)
+                    //sendOTPVerificationEmail(result, res)
                     //res.send({ status: "ok" })
                 })
                 .catch( e => {
@@ -102,32 +102,38 @@ router.post("/login-user", (req, res) => {
         User.find({email})
         .then( data => {
             if(data.length){
-                //User exists 
-
-                if(!data[0].verified)  {
-
-                    const userId = data[0]._id ;
-
-                    UserOTPVerification.find({userId})
-                    .then( id => {
-                        if(id.length){
-
-                            res.json({
-                                status: "FAILED",
-                                message: "email hasn't been verified yet. check your inbox",
-                                iddata: id[0],
-                                data: data[0]
-                            
-                            })
-                        }
-                    })
-                } else {
+                //User exists
+        
                     const hashedPassword = data[0].password
                     bcrypt.compare(password, hashedPassword).then(result => {
                         if(result){
                             //Password match
+
                             const token = jwt.sign({ email: email }, process.env.JWT_SECRET)
-                            return res.json({ status: "ok", data: data, act: token })
+
+                            if(!data[0].verified)  {
+
+                                const userId = data[0]._id ;
+            
+                                UserOTPVerification.find({userId})
+                                .then( id => {
+                                    if(id.length){
+                                        
+                                        sendOTPVerificationEmail(data[0], res)
+
+                                        res.json({
+                                            status: "FAILED",
+                                            message: "email hasn't been verified yet. check your inbox",
+                                            iddata: id[0],
+                                            data: data[0],
+                                            act: token
+                                        
+                                        })
+                                    }
+                                })
+                            }else{
+                                return res.json({ status: "ok", act: token })
+                            }    
                         }else{
                             return res.json({ status: "error", error: "Invalid Password" })
                         }
@@ -135,7 +141,7 @@ router.post("/login-user", (req, res) => {
                     .catch(e => {
                         res.json({ status: "password match error"})
                     })
-                }
+                
             }else{
                 res.json({ status: "Invalid Credentials"})
             }
@@ -277,14 +283,14 @@ const sendOTPVerificationEmail = async ({ _id,email }, res) => {
 
         await transporter.sendMail(mailOptions)
         .then(() => {
-            res.send({
-                status: 'ok',
-                message:'Verification otp sent',
-                data: {
-                    userId: _id,
-                    email,
-                },
-            })
+            // res.send({
+            //     status: 'ok',
+            //     message:'Verification otp sent',
+            //     data: {
+            //         userId: _id,
+            //         email,
+            //     },
+            // })
         })
         .catch((e) => {
             console.log(e)

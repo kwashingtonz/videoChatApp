@@ -3,14 +3,19 @@ import "./style.css";
 
 export default class VerifyOTP extends Component {
 
-  constructor(props) {
-      super(props);
-      this.state = {
-          otp: {},
-          user: {},
-         
-      };
-    
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: "",
+            userId: "",
+            otp: "",
+            otpData: {},
+            user: {},
+            
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.reSendOTPSubmit = this.resSendOTPSubmit.bind(this);
     }
 
   componentDidMount() {
@@ -18,8 +23,63 @@ export default class VerifyOTP extends Component {
     const userData = JSON.parse(window.sessionStorage.getItem("userdata"));
     const otpData = JSON.parse(window.sessionStorage.getItem("otpdata"));
 
-    this.setState({otp:otpData, user:userData}); 
+    this.setState({otp: otpData.otp, email: userData.email, userId: otpData.userId ,otpData:otpData, user:userData}); 
 
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const { email, otp } = this.state;
+    console.log(email, otp);
+    fetch("http://localhost:3000/user/verifyOTP", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+  
+        // token: window.localStorage.getItem("token"),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+    
+        console.log(data, "verifyOTP");
+        // this.setState({ verifyOTP: data.data });
+      });
+
+
+  }
+
+    resSendOTPSubmit(e) {
+    e.preventDefault();
+    const {userId, email} = this.state;
+    console.log(userId, email);
+    fetch("http://localhost:3000/user/resendOTPVerificationCode", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        userId,
+        email,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "OTP Send");
+        if (data.status === "ok") {
+          alert("re-send OTP successful");
+          window.localStorage.setItem("token", data.act);
+          window.location.href = "./VerifyOTP";
+        }
+      });
   }
   
   render() {
@@ -35,20 +95,10 @@ export default class VerifyOTP extends Component {
         <div className="mb-3">
           <label>Your Email</label>
            <h4>{this.state.user.email}</h4>
-          <input
-            type="text"
-            className="form-control"
-          />
         </div>
 
         <div className="mb-3">
           <label>Enter OTP Code</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Enter OTP"
-            // onChange={(e) => this.setState({ otp: e.target.value })}
-          />
         </div>
        <div className="OTP">
         <div className="otp-field">
