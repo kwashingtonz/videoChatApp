@@ -41,7 +41,7 @@ export default class VerifyOTP extends Component {
       },
       body: JSON.stringify({
   
-        // token: window.localStorage.getItem("token"),
+         token: window.sessionStorage.getItem("token"),
       }),
     })
       .then((res) => res.json())
