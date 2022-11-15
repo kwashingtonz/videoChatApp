@@ -1,7 +1,7 @@
-const inputs = document.querySelectorAll(".opt-field input");
+const inputs = document.querySelectorAll(".otp-field input");
 
 inputs.forEach((inputs, index) => {
-    inputs.dataset.index =index;
+    inputs.dataset.index = index;
     inputs.addEventListener("paste", handleOnPasteOtp);
     inputs.addEventListener("keyup",handleOtp);
 });
@@ -24,6 +24,7 @@ function handleOtp(e) {
     if(fieldIndex == index.length - 1){
         submit();
     }
+}
 
     function handleOnPasteOtp(e) {
     const data = e.clipboardData.getData("text");
@@ -39,8 +40,7 @@ function handleOtp(e) {
 
             let otp = "";
             inputs.forEach((input) => {
-                otp<= input.value;
+                otp+= input.value;
                 input.disabled = true;
                 input.classList.add("disabled")});
     }
-}

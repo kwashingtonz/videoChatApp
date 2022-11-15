@@ -33,6 +33,7 @@ export default class Login extends Component {
           alert("Please Verify the OTP. check your email inbox");
           window.sessionStorage.setItem("userdata", JSON.stringify(data.data));
           window.sessionStorage.setItem("otpdata", JSON.stringify(data.iddata));
+          window.sessionStorage.setItem("token", data.act);
           window.location.href = "./verifyOTP";
         } else if (data.status === "ok") {
           alert("login successful");

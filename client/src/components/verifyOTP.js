@@ -43,14 +43,19 @@ export default class VerifyOTP extends Component {
       body: JSON.stringify({
          otp: this.state.otp,
          userId: userId,
-         token: window.sessionStorage.getItem("token"),
+         //token: window.sessionStorage.getItem("token"),
       }),
     })
       .then((res) => res.json())
       .then((data) => {
     
         console.log(data, "verifyOTP");
-        // this.setState({ verifyOTP: data.data });
+        if (data.status === "VERIFIED") {
+            alert("Verification Successful");
+            window.location.href = "./userData";
+        }else{
+            alert("Verification Unsuccessful");
+        }
       });
 
 
@@ -105,8 +110,11 @@ export default class VerifyOTP extends Component {
           <label>Enter OTP Code</label>
         </div>
        <div className="OTP">
+
+       <script src="main.js"></script>
+
         <div className="otp-field">
-        <script src="main.js"></script>
+
           <input type="text" maxLength="1"/>
           <input type="text" maxLength="1"/>
           <input type="text" maxLength="1"/>
