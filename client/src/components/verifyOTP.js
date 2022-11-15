@@ -15,7 +15,7 @@ export default class VerifyOTP extends Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    //this.reSendOTPSubmit = this.resSendOTPSubmit.bind(this);
+    this.reSendOTPSubmit = this.reSendOTPSubmit.bind(this);
     }
 
   componentDidMount() {
@@ -61,33 +61,33 @@ export default class VerifyOTP extends Component {
 
   }
 
-//     resSendOTPSubmit(e) {
-//     e.preventDefault();
-//     const {userId, email} = this.state;
-//     console.log(userId, email);
-//     fetch("http://localhost:3000/user/resendOTPVerificationCode", {
-//       method: "POST",
-//       crossDomain: true,
-//       headers: {
-//         "Content-Type": "application/json",
-//         Accept: "application/json",
-//         "Access-Control-Allow-Origin": "*",
-//       },
-//       body: JSON.stringify({
-//         userId,
-//         email,
-//       }),
-//     })
-//       .then((res) => res.json())
-//       .then((data) => {
-//         console.log(data, "OTP Send");
-//         if (data.status === "ok") {
-//           alert("re-send OTP successful");
-//           window.localStorage.setItem("token", data.act);
-//           window.location.href = "./VerifyOTP";
-//         }
-//       });
-//   }
+    reSendOTPSubmit(e) {
+    e.preventDefault();
+    const {userId, email} = this.state;
+    console.log(userId, email);
+    fetch("http://localhost:3000/user/resendOTPVerificationCode", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        userId : userId,
+        email : email,
+      }), 
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "OTP Send");
+        if (data.status === "ok") {
+          alert("re-send OTP successful");
+          window.localStorage.setItem("token", data.act);
+          window.location.href = "./VerifyOTP";
+        }
+      });
+  }
   
   render() {
     return (
@@ -111,8 +111,6 @@ export default class VerifyOTP extends Component {
         </div>
        <div className="OTP">
 
-       <script src="main.js"></script>
-
         <div className="otp-field">
 
             <input type="text" maxLength="4" onKeyPress={(event) => {
@@ -131,7 +129,7 @@ export default class VerifyOTP extends Component {
           </button>{' '}
         </form>
         
-        <form>
+        <form onSubmit={this.reSendOTPSubmit}>
          
          <button type="submit" variant="primary" className="btn btn-warning resend" >
             Re-Send

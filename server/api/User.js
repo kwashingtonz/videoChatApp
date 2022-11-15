@@ -226,7 +226,47 @@ router.post("/resendOTPVerificationCode", async (req, res) => {
         } else {
             //deleting existing records and re-send
             await UserOTPVerification.deleteMany({ userId });
-            sendOTPVerificationEmail({_id: userId, email }, res);
+            
+            try{
+                const otp = `${Math.floor(1000 + Math.random()*9000)}`
+                  //hash the otp
+                  const saltRounds =10
+                  const hashedOTP = await bcrypt.hash(otp, saltRounds)
+                  const newOTPVerification = await new UserOTPVerification({
+                      userId: userId,
+                      otp: hashedOTP,
+                      createdAt: Date.now(),
+                      expiresAt: Date.now() + 3600000,
+                  })
+        
+                //save otp record
+                await newOTPVerification.save()
+        
+                //mail options
+                const mailOptions = {
+                    from: process.env.AUTH_EMAIL,
+                    to: email,
+                    subject: 'Verify your Email',
+                    html: `<p>Enter ${otp}</b> in the app to verify your email </p><p>This code expires in 1 hour</p>`,
+                }
+        
+                await transporter.sendMail(mailOptions)
+                .then(async () => {
+                    res.send({
+                        status: 'ok'
+                    })
+                })
+                .catch((e) => {
+                    console.log(e)
+                    res.send({
+                        status: 'verification error'
+                    })
+                }) 
+               
+            }catch(e){
+        
+            }
+
         }
 
     }catch (error) {
