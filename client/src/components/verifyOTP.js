@@ -52,7 +52,7 @@ export default class VerifyOTP extends Component {
         console.log(data, "verifyOTP");
         if (data.status === "VERIFIED") {
             alert("Verification Successful");
-            window.location.href = "./userData";
+            window.location.href = "./userDetails";
         }else{
             alert("Verification Unsuccessful");
         }
@@ -115,10 +115,12 @@ export default class VerifyOTP extends Component {
 
         <div className="otp-field">
 
-          <input type="text" maxLength="1"/>
-          <input type="text" maxLength="1"/>
-          <input type="text" maxLength="1"/>
-          <input type="text" maxLength="1"/>
+            <input type="text" maxLength="4" onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                    }
+                }} onChange={(e) => this.setState({ otp: e.target.value })}
+            />
         
           </div>
 
@@ -128,11 +130,16 @@ export default class VerifyOTP extends Component {
             Verify
           </button>{' '}
         </form>
-          
-          {/* <button type="submit" variant="primary" className="btn btn-primary">
+        
+        <form>
+         
+         <button type="submit" variant="primary" className="btn btn-warning resend" >
             Re-Send
           </button>
-         */}
+          
+        </form> 
+         
+         
     
     </div>
       

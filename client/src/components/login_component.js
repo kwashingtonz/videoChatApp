@@ -34,11 +34,11 @@ export default class Login extends Component {
           window.sessionStorage.setItem("userdata", JSON.stringify(data.data));
           window.sessionStorage.setItem("otpdata", JSON.stringify(data.iddata));
           window.sessionStorage.setItem("token", data.act);
-          window.location.href = "./verifyOTP";
+          window.location.href = "/verifyOTP";
         } else if (data.status === "ok") {
           alert("login successful");
           window.sessionStorage.setItem("token", data.act);
-          window.location.href = "./userDetails";
+          window.location.href = "/userDetails";
         } else if(data.status === "Invalid Credentials"){
           alert("Email or password not matching");
 

@@ -18,8 +18,8 @@ function App() {
               <Route exact path="/" element={<Login />} />
               <Route path="/sign-in" element={<Login />} />
               <Route path="/sign-up" element={<SignUp />} />
-              <Route path="/userDetails" element={<UserDetails />} />
               <Route path="/verifyOTP" element={<VerifyOTP />} />
+              <Route path="/userDetails" element={<UserDetails />} />    
             </Routes>
           </div>
         </div>
