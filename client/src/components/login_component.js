@@ -12,7 +12,7 @@ export default class Login extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const { email, password } = this.state;
-    console.log(email, password);
+    
     fetch("http://localhost:3000/user/login-user", {
       method: "POST",
       crossDomain: true,
@@ -30,7 +30,7 @@ export default class Login extends Component {
       .then((data) => {
         console.log(data, "userRegister");
         if (data.status === "FAILED") {
-          alert("email hasn't been verified yet. check your inbox");
+          alert("Please Verify the OTP. check your email inbox");
           window.sessionStorage.setItem("userdata", JSON.stringify(data.data));
           window.sessionStorage.setItem("otpdata", JSON.stringify(data.iddata));
           window.location.href = "./verifyOTP";
@@ -43,6 +43,8 @@ export default class Login extends Component {
 
         }else if (email === "" || password === "" ){
           alert("please enter email and password");
+        }else{
+          alert("error");
         }
       });
   }

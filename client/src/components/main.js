@@ -24,4 +24,23 @@ function handleOtp(e) {
     if(fieldIndex == index.length - 1){
         submit();
     }
+
+    function handleOnPasteOtp(e) {
+    const data = e.clipboardData.getData("text");
+    const value = data.split("");
+    if(value.length === inputs.length) {
+        inputs.forEach((input, index) => (input.value = value[index]));
+        submit();
+    }
+}
+
+        function submit() {
+            console.log ("otp submitted!");
+
+            let otp = "";
+            inputs.forEach((input) => {
+                otp<= input.value;
+                input.disabled = true;
+                input.classList.add("disabled")});
+    }
 }

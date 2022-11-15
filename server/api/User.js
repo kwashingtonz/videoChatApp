@@ -67,7 +67,7 @@ router.post("/register", (req, res) => {
                 newUser.save().then(result => {
                     
                     //sendOTPVerificationEmail(result, res)
-                    //res.send({ status: "ok" })
+                    res.send({ status: "ok" })
                 })
                 .catch( e => {
                     res.send({ status: "error" })
@@ -113,24 +113,8 @@ router.post("/login-user", (req, res) => {
 
                             if(!data[0].verified)  {
 
-                                const userId = data[0]._id ;
-            
-                                UserOTPVerification.find({userId})
-                                .then( id => {
-                                    if(id.length){
-                                        
-                                        sendOTPVerificationEmail(data[0], res)
+                                sendOTPVerificationEmail(data, token, res)
 
-                                        res.json({
-                                            status: "FAILED",
-                                            message: "email hasn't been verified yet. check your inbox",
-                                            iddata: id[0],
-                                            data: data[0],
-                                            act: token
-                                        
-                                        })
-                                    }
-                                })
                             }else{
                                 return res.json({ status: "ok", act: token })
                             }    
@@ -255,42 +239,55 @@ router.post("/resendOTPVerificationCode", async (req, res) => {
 
 
 //Send otp verification email
-const sendOTPVerificationEmail = async ({ _id,email }, res) => {
+const sendOTPVerificationEmail = async (data,token, res) => {
     
+    const userId= data[0]._id
+    await UserOTPVerification.deleteMany({ userId });
+
     try{
         const otp = `${Math.floor(1000 + Math.random()*9000)}`
-
-        //mail options
-        const mailOptions = {
-            from: process.env.AUTH_EMAIL,
-            to: email,
-            subject: 'Verify your Email',
-            html: `<p>Enter ${otp}</b> in the app to verify your email </p><p>This code expires in 1 hour</p>`,
-        }
-
-        //hash the otp
-        const saltRounds =10
-        const hashedOTP = await bcrypt.hash(otp, saltRounds)
-        const newOTPVerification = await new UserOTPVerification({
-            userId: _id,
-            otp: hashedOTP,
-            createdAt: Date.now(),
-            expiresAt: Date.now() + 3600000,
-        })
+          //hash the otp
+          const saltRounds =10
+          const hashedOTP = await bcrypt.hash(otp, saltRounds)
+          const newOTPVerification = await new UserOTPVerification({
+              userId: userId,
+              otp: hashedOTP,
+              createdAt: Date.now(),
+              expiresAt: Date.now() + 3600000,
+          })
 
         //save otp record
         await newOTPVerification.save()
 
+        //mail options
+        const mailOptions = {
+            from: process.env.AUTH_EMAIL,
+            to: data[0].email,
+            subject: 'Verify your Email',
+            html: `<p>Enter ${otp}</b> in the app to verify your email </p><p>This code expires in 1 hour</p>`,
+        }
+
         await transporter.sendMail(mailOptions)
-        .then(() => {
-            // res.send({
-            //     status: 'ok',
-            //     message:'Verification otp sent',
-            //     data: {
-            //         userId: _id,
-            //         email,
-            //     },
-            // })
+        .then(async () => {
+             await UserOTPVerification.find({userId})
+            .then( id => {
+            if(id.length){
+                                    
+             res.json({
+                status: "FAILED",
+                message: "email hasn't been verified yet. check your inbox",
+                iddata: id[0],
+                data: data[0],
+                act: token
+                                        
+                })
+            }else{
+                res.json({ status: "no otp"})
+            }
+        })
+            .catch(e => {
+                res.json({ status: "otp sending error"})
+             })
         })
         .catch((e) => {
             console.log(e)
