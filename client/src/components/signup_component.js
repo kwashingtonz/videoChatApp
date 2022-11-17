@@ -16,7 +16,7 @@ export default class SignUp extends Component {
     e.preventDefault();
     const { fname, lname, email, password } = this.state;
     console.log(fname, lname, email, password);
-    fetch("http://localhost:3000/user/register", {
+    fetch("http://localhost:8000/user/register", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -33,7 +33,14 @@ export default class SignUp extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "userRegister");
+        if (data.status === "ok") {
+          alert("Registration Successful");
+          window.location.href = "/";
+        } else if (data.status === "User exists") {
+          alert("User exists");
+        } else if(data.status === "error"){
+          alert("error");
+        }
       });
   }
   render() {

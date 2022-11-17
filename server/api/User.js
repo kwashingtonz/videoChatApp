@@ -49,7 +49,7 @@ router.post("/register", (req, res) => {
         //Checking if user already exist
         User.find({email}).then(result => {
             if(result.length){
-                return res.json({ error: "User Exists" })
+                return res.send({ status: "User exists" })
             }else{
                //Try to create a new user
                 
@@ -75,7 +75,6 @@ router.post("/register", (req, res) => {
 
                })
                .catch( e => {
-                    return res.json({ error: "User Exists" })
                     res.send({ status: "error" })
                })
 

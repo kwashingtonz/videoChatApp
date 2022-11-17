@@ -32,7 +32,7 @@ export default class VerifyOTP extends Component {
     e.preventDefault();
     const { userId, otp } = this.state;
     console.log(userId, otp);
-    fetch("http://localhost:3000/user/verifyOTP", {
+    fetch("http://localhost:8000/user/verifyOTP", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -65,7 +65,7 @@ export default class VerifyOTP extends Component {
     e.preventDefault();
     const {userId, email} = this.state;
     console.log(userId, email);
-    fetch("http://localhost:3000/user/resendOTPVerificationCode", {
+    fetch("http://localhost:8000/user/resendOTPVerificationCode", {
       method: "POST",
       crossDomain: true,
       headers: {
