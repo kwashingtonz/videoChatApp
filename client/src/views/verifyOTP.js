@@ -52,7 +52,7 @@ export default class VerifyOTP extends Component {
         console.log(data, "verifyOTP");
         if (data.status === "VERIFIED") {
             alert("Verification Successful");
-            window.location.href = "./userDetails";
+            window.location.href = "./landing";
         }else{
             alert("Verification Unsuccessful");
         }

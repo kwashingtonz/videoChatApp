@@ -38,7 +38,7 @@ export default class Login extends Component {
         } else if (data.status === "ok") {
           alert("login successful");
           window.sessionStorage.setItem("token", data.act);
-          window.location.href = "/userDetails";
+          window.location.href = "/landing";
         } else if(data.status === "Invalid Credentials"){
           alert("Email or password not matching");
 

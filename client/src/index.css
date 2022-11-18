@@ -3,12 +3,24 @@
 * {
   box-sizing: border-box;
 }
+
+html {
+  height: 100%;
+}
+
 body {
   background: #1c8ef9 !important;
   min-height: 100vh;
   display: flex;
   font-weight: 400;
   font-family: "Fira Sans", sans-serif;
+  margin: 0;
+  float: left;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
 h1,

@@ -23,6 +23,11 @@ app.use('/user', UserRouter)
 
 const server = http.createServer(app);
 
+server.listen(port,'0.0.0.0',() => {
+    console.log(`Server running on port ${port}`);
+  })
+  
+
 // will consist of all our participants
 const rooms = []
 
@@ -56,9 +61,6 @@ app.post('/rooms/:roomId/join', (req, res) => {
     res.json({ ...room.getInfo() })
 })
 
-server.listen(port,() => {
-  console.log(`Server running on port ${port}`);
-})
 
 startPeerServer();
 startSocketServer(server, rooms);

@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { createRoomAPI } from "../../api/room";
+
 const Landing = ({ currentUserId }) => {
     const navigate = useNavigate()
     const createRoom = useCallback(async () => {
@@ -12,6 +13,7 @@ const Landing = ({ currentUserId }) => {
             console.error(error);
         }
     }, [currentUserId, navigate]);
+
     return (<div className="container pt-5">
       <div className="columns">
         <div className="column is-half is-offset-one-quarter has-text-centered">

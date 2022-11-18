@@ -16,6 +16,7 @@ const Room = ({ peerInstance, currentUserId}) => {
     const [participants, setParticipants] = useState([]);
     //const [name, setName] = useState("");
     const { roomId } = useParams();
+
     const call = useCallback((userId) => {
         if (!peerInstance || !currentMediaStream.current) {
             return Promise.resolve(null);
@@ -33,10 +34,12 @@ const Room = ({ peerInstance, currentUserId}) => {
             outgoingCall.on('stream', streamListener);
         });
     }, [peerInstance]);
+
     const callEveryoneInTheRoom = useCallback(async (roomId) => {
         try {
             const roomInformation = await fetchRoomAPI(roomId);
             const { participants } = roomInformation;
+            console.log(participants)
             if (participants.length) {
                 const participantCalls = participants
                     .filter((participant) => participant !== currentUserId)
@@ -52,6 +55,7 @@ const Room = ({ peerInstance, currentUserId}) => {
             console.error(error);
         }
     }, [currentUserId, call]);
+
     const setCurrentUserVideo = useCallback(async () => {
         if (!currentUserVideoRef.current) {
             return;
@@ -71,6 +75,7 @@ const Room = ({ peerInstance, currentUserId}) => {
             console.error(error);
         }
     }, [roomId, currentUserId, callEveryoneInTheRoom]);
+
     useEffect(() => {
         setCurrentUserVideo();
         socketInstance.current = io(process.env.REACT_APP_BACKEND_EXPRESS_HOST);
@@ -78,6 +83,7 @@ const Room = ({ peerInstance, currentUserId}) => {
             socketInstance?.current?.emit('send:peerId', currentUserId);
         });
     }, [currentUserId, setCurrentUserVideo]);
+
     useEffect(() => {
         const userLeftListener = (peerId) => {
             const filteredParticipants = participants.filter(participant => participant.userId !== peerId);
@@ -88,6 +94,7 @@ const Room = ({ peerInstance, currentUserId}) => {
             socketInstance?.current?.off('user:left', userLeftListener);
         };
     }, [participants]);
+
     useEffect(() => {
         if (!peerInstance) {
             return;
@@ -108,6 +115,7 @@ const Room = ({ peerInstance, currentUserId}) => {
         peerInstance.on('call', incomingCallListener);
         return () => peerInstance.off('call', incomingCallListener);
     }, [peerInstance, participants]);
+
     useEffect(() => {
         if (!currentMediaStream.current) {
             return;
@@ -117,6 +125,7 @@ const Room = ({ peerInstance, currentUserId}) => {
             videoTracks[0].enabled = !videoMuted;
         }
     }, [videoMuted]);
+
     useEffect(() => {
         if (!currentMediaStream.current) {
             return;
@@ -126,6 +135,7 @@ const Room = ({ peerInstance, currentUserId}) => {
             audioTracks[0].enabled = !muted;
         }
     }, [muted]);
+
     return (<div className="Room">
       
       <div className="container has-text-centered">

@@ -15,6 +15,7 @@ import Room from './views/Room';
 function App() {
   const peerInstance = useRef(null);
   const [currentUserId, setCurrentUserId] = useState('');
+
   useEffect(() => {
       const userId = uuidv4();
       // save peer instance into ref
