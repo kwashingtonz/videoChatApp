@@ -31,9 +31,7 @@ function App() {
   }, []);
   return (
     <Router>
-      <div className="App">
-        <div className="auth-wrapper">
-          <div className="auth-inner">
+      
             <Routes>
               <Route exact path="/" element={<Login />} />
               <Route path="/sign-in" element={<Login />} />
@@ -43,9 +41,7 @@ function App() {
               <Route path="/landing" element={<Landing currentUserId={currentUserId}/>}/>
               <Route path="/rooms/:roomId" element={<Room currentUserId={currentUserId} peerInstance={peerInstance.current}/>}/>
             </Routes>
-          </div>
-        </div>
-      </div>
+       
     </Router>
   );
 }

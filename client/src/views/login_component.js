@@ -51,6 +51,9 @@ export default class Login extends Component {
   }
   render() {
     return (
+      <div className="App">
+        <div className="auth-wrapper">
+          <div className="auth-inner">
       <form onSubmit={this.handleSubmit}>
         <h3>Sign In</h3>
 
@@ -96,6 +99,9 @@ export default class Login extends Component {
           <a href="/sign-up">Sign Up</a>
         </p>
       </form>
+      </div>
+      </div>
+      </div>
     );
   }
 }
