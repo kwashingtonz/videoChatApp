@@ -3,10 +3,10 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Login from "./components/login_component";
-import SignUp from "./components/signup_component";
-import UserDetails from "./components/userDetails";
-import VerifyOTP from "./components/verifyOTP";
+import Login from "./views/login_component";
+import SignUp from "./views/signup_component";
+import UserDetails from "./views/userDetails";
+import VerifyOTP from "./views/verifyOTP";
 
 function App() {
   return (
