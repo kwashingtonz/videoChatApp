@@ -379,19 +379,17 @@ html,
 }
 .v-container {
 	display: grid;
-	grid-template-columns: 7fr 3fr;
+	grid-template-columns: 0fr 0fr 0fr;
+  grid-template-rows: 0fr 0fr;
   grid-area: calc();
   
 }
 
 .video-container {
   display: grid;
-	grid-template-columns: 0.5fr 0.5fr;
-	box-sizing: border-box;
-	margin-top: 10rem;
+	grid-template-columns: 1fr 1fr;
+	margin-top: 5rem;
 	margin-left: 5rem;
-  column-gap: 20px;
-  row-gap: 20px;
   
 
 }
