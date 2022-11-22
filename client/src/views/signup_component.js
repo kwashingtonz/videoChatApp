@@ -1,5 +1,7 @@
 
 import React, { Component } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -12,10 +14,19 @@ export default class SignUp extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   handleSubmit(e) {
+    const toastOptions = {
+      position: "top-right",
+      autoClose: 3000,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "dark",
+    };
     e.preventDefault();
     const { fname, lname, email, password } = this.state;
     console.log(fname, lname, email, password);
+
     fetch("http://localhost:8000/user/register", {
       method: "POST",
       crossDomain: true,
@@ -33,18 +44,46 @@ export default class SignUp extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
+
         if (data.status === "ok") {
-          alert("Registration Successful");
-          window.location.href = "/";
-        } else if (data.status === "User exists") {
-          alert("User exists");
-        } else if(data.status === "error"){
-          alert("error");
-        }
+          //alert("Registration Successful");
+          toast.success("signup successful", toastOptions);
+          
+          //window.location.href = "/";
+          window.setTimeout(function() {
+            window.location.href = '/';
+        }, 3000);
+
+        }else if(fname === "" || lname ==="" || email === "" || password === ""){
+          toast.error("All fields must be filled", toastOptions);
+          
+        // eslint-disable-next-line  
+       } else if (!/^[\w+\.]+@([\w+]+\.)+[\w-]{2,4}$/.test(email)){
+         toast.error("please provide a valide email", toastOptions);
+
+       }else if (!/^[a-zA-Z]*$/.test(fname)){
+         toast.error("first name must be charactors", toastOptions);
+
+       }else if (!/^[a-zA-Z]*$/.test(lname)){
+         toast.error("last name must be charactors", toastOptions);
+
+       }else if (password.length < 8){
+         toast.error("passowrd must be 8 charactors", toastOptions);
+
+       }else if (email.match){
+         toast.error("Already User registered!", toastOptions);
+       }
+        // } else if (data.status === "User exists") {
+        //   alert("User exists");
+        // } else if(data.status === "error"){
+        //   alert("error");
+        // }
+
       });
   }
   render() {
     return (
+      <>
       <div className="App">
         <div className="auth-wrapper">
           <div className="auth-inner">
@@ -104,6 +143,8 @@ export default class SignUp extends Component {
       </div>
       </div>
       </div>
+      <ToastContainer/>
+      </>
     );
   }
 }

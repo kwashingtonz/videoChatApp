@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default class Login extends Component {
   constructor(props) {
@@ -9,7 +12,16 @@ export default class Login extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+
   handleSubmit(e) {
+    const toastOptions = {
+      position: "top-right",
+      autoClose: 3000,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "dark",
+    };
     e.preventDefault();
     const { email, password } = this.state;
     
@@ -28,29 +40,53 @@ export default class Login extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
+
         console.log(data, "userRegister");
+
         if (data.status === "FAILED") {
           alert("Please Verify the OTP. check your email inbox");
+
+          toast.warning("Please Verify the OTP. check your email inbox!", toastOptions);
+
           window.sessionStorage.setItem("userdata", JSON.stringify(data.data));
           window.sessionStorage.setItem("otpdata", JSON.stringify(data.iddata));
           window.sessionStorage.setItem("token", data.act);
-          window.location.href = "/verifyOTP";
+          
+          //window.location.href = "/verifyOTP";
+
+          window.setTimeout(function() {
+            window.location.href = '/verifyOTP';
+        }, 3000);
+
         } else if (data.status === "ok") {
-          alert("login successful");
+
+          //alert("login successful");
+          toast.success("Login Successful!", toastOptions);
+
           window.sessionStorage.setItem("token", data.act);
-          window.location.href = "/landing";
+          window.sessionStorage.setItem("chat-app-user", JSON.stringify(data.act)); //url
+
+          //window.location.href = "/landing";
+          window.setTimeout(function() {
+            window.location.href = '/landing';
+        }, 3000);
+
         } else if(data.status === "Invalid Credentials"){
-          alert("Email or password not matching");
+          toast.error("Email or password not matching", toastOptions);
 
         }else if (email === "" || password === "" ){
-          alert("please enter email and password");
-        }else{
-          alert("error");
+          toast.error("please enter email and password", toastOptions);
+
+        }else if (data.status === "error"){
+          toast.error("invalid password", toastOptions);
         }
       });
   }
+
+
   render() {
     return (
+      <>
       <div className="App">
         <div className="auth-wrapper">
           <div className="auth-inner">
@@ -77,7 +113,7 @@ export default class Login extends Component {
           />
         </div>
 
-        <div className="mb-3">
+        {/* <div className="mb-3">
           <div className="custom-control custom-checkbox">
             <input
               type="checkbox"
@@ -88,7 +124,7 @@ export default class Login extends Component {
               Remember me
             </label>
           </div>
-        </div>
+        </div> */}
 
         <div className="d-grid">
           <button type="submit" className="btn btn-primary">
@@ -99,9 +135,12 @@ export default class Login extends Component {
           <a href="/sign-up">Sign Up</a>
         </p>
       </form>
+
       </div>
       </div>
       </div>
+      <ToastContainer/>
+      </>
     );
   }
 }
