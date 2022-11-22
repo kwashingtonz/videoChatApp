@@ -19,15 +19,28 @@ const Landing = ({ currentUserId }) => {
         }
     }, [currentUserId, navigate]);
 
-    return (<div className="container pt-5">
-      <div className="columns">
-        <div className="column is-half is-offset-one-quarter has-text-centered">
-          <p className="mb-5 is-size-1 has-text-centered">
-            <strong className="has-text-white">Hi Welcome</strong>
-          </p>
+    return (
+      <div className="container">
+      <h2>Meet Your Friends</h2> 
+         <input type="text" placeholder="Enter Room Code"/>
+         
           <button onClick={createRoom} className="button is-success">Create a room</button>
-        </div>
+
+          <button type="submit" >
+            Call Up
+          </button>
+
+             
+        <form  className="box2" >
+         
+         <button  type="submit" variant="primary"  >
+         LogOut
+          </button>   
+          
+        </form> 
+     
+
       </div>
-    </div>);
+      );
 };
 export default Landing;

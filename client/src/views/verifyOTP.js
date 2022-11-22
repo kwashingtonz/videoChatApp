@@ -127,16 +127,14 @@ export default class VerifyOTP extends Component {
   render() {
     return (
       <>
-      <div className="App">
-      <div className="auth-wrapper">
-        <div className="auth-inner">
-      <div>
 
-      <button id='backbtn' variant="primary" type="submit"
+      <button id='backbtn' variant="primary" type="submit" className="back"
      onClick={this.handleBackBtnClick}>
-            Back
+            {'<-'}Back
        </button>
-      <form onSubmit={this.handleSubmit}>
+
+       <div className="verify">
+      <form className="box"  onSubmit={this.handleSubmit}>
     
     <meta charSet="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -144,10 +142,9 @@ export default class VerifyOTP extends Component {
     
         <h3>OTP Verification</h3>
 
-        <div className="mb-3">
           <label>Your Email</label>
-           <h4>{this.state.user.email}</h4>
-        </div>
+           <h5>{this.state.user.email}</h5>
+        
 
         <div className="mb-3">
           <label>Enter OTP Code</label>
@@ -167,25 +164,22 @@ export default class VerifyOTP extends Component {
 
         </div> <br></br>
         
-          <button type="submit" variant="primary" className="btn btn-primary">
+          <button type="submit" variant="primary" >
             Verify
-          </button>{' '}
+          </button>
         </form>
         
-        <form onSubmit={this.reSendOTPSubmit}>
+        <form className="box1" onSubmit={this.reSendOTPSubmit}>
          
-         <button type="submit" variant="primary" className="btn btn-warning resend" >
+         <button type="submit" variant="primary" >
             Re-Send
           </button>
           
         </form> 
          
-         
+      </div>
     
-    </div>
-    </div>
-    </div>
-    </div>
+   
     <ToastContainer/>
     </>
     );

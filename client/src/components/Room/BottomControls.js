@@ -6,20 +6,20 @@ const style = {
     bottom: 0
 };
 const BottomControls = ({ onLeave, toggleMute, toggleVideoMute, muted, videoMuted, }) => {
-    return (<div className="has-text-centered mt-5" style={style}>
-            <button className="button is-danger mr-2" onClick={onLeave}>
+    return (<div className="btn" style={style}>
+            <button className="btn-leave" onClick={onLeave}>
                 <span className="icon">
                     <i className="fas fa-phone-slash"/>
                 </span>
                 <span>Leave call</span>
             </button>
-            <button className={`button is-${muted ? 'danger' : 'primary'} mr-2`} onClick={toggleMute}>
+            <button className={`btn-mute`} onClick={toggleMute}>
                 <span className="icon">
                     <i className={`fas ${muted ? 'fa-microphone-slash' : 'fa-microphone'}`}></i>
                 </span>
                 <span>{muted ? 'Unmute' : 'Mute'}</span>
             </button>
-            <button className={`button is-${videoMuted ? 'danger' : 'primary'} mr-2`} onClick={toggleVideoMute}>
+            <button className={`btn-vmute`} onClick={toggleVideoMute}>
                 <span className="icon">
                     <i className={`fas ${videoMuted ? 'fa-video-slash' : 'fa-video'}`}></i>
                 </span>
