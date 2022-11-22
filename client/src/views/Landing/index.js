@@ -1,12 +1,14 @@
-import React, { useCallback } from "react";
+import React, { useCallback,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createRoomAPI } from "../../api/room";
 
 const Landing = ({ currentUserId }) => {
 
-  if ((sessionStorage.length === "")) {
+  useEffect(() => {
+    if ((sessionStorage.length == "")) {
     window.location.href = "./sign-in";
   } //url
+}, []);
 
     const navigate = useNavigate()
     const createRoom = useCallback(async () => {

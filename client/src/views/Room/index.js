@@ -136,23 +136,23 @@ const Room = ({ peerInstance, currentUserId}) => {
         }
     }, [muted]);
 
-    return (
-        <div className="v-container">
-            <div className='myId'>
-                <strong>RoomId: {roomId}</strong>
-            </div>
-    
-            <div className="video-container">
-                <video ref={currentUserVideoRef} muted style={{width: "300px"}}/>
-          
-                {participants.map(participant => (<RemoteUserVideo key={participant.userId} remoteStream={participant.mediaStream}/>))}
-            </div>
-     
+    return (<div className="Room">
+      
+      <div className="container has-text-centered">
+        <p className="mb-5 mt-5">
+          <strong>RoomId: {roomId}</strong>
+        </p>
+        <div className="columns is-multiline is-centered">
+          <div className="column is-narrow">
+            <video ref={currentUserVideoRef} muted/>
+          </div>
+          {participants.map(participant => (<RemoteUserVideo key={participant.userId} remoteStream={participant.mediaStream}/>))}
+        </div>
+      </div>
       <BottomControls onLeave={() => {
             socketInstance?.current?.disconnect();
             navigate(`/landing`);
         }} toggleMute={() => setMuted(!muted)} toggleVideoMute={() => setVideoMuted(!videoMuted)} muted={muted} videoMuted={videoMuted}/>
-    </div>
-    );
+    </div>);
 };
 export default Room;
