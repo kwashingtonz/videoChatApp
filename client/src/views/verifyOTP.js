@@ -164,7 +164,7 @@ export default class VerifyOTP extends Component {
 
         </div> <br></br>
         
-          <button type="submit" variant="primary" >
+          <button   className="verify-btn" >
             Verify
           </button>
         </form>

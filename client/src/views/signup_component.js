@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -91,7 +90,7 @@ export default class SignUp extends Component {
   render() {
     return (
       <>
-      <form className="box" onSubmit={this.handleSubmit}>
+      <form className="singup-box" onSubmit={this.handleSubmit}>
         <h2>Sign Up</h2>
 
           <input
