@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import { useNavigate,useParams } from "react-router-dom";
+//import { useNavigate,useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import io from 'socket.io-client';
 import { getUserMediaPromise } from '../../utils/media';
 import { fetchRoomAPI, joinRoomAPI } from '../../api/room';
@@ -7,7 +8,7 @@ import RemoteUserVideo from '../../components/Room/RemoteUserVideo';
 import BottomControls from '../../components/Room/BottomControls';
 
 const Room = ({ peerInstance, currentUserId}) => {
-    const navigate = useNavigate()
+    //const navigate = useNavigate()
     const currentMediaStream = useRef(null);
     const currentUserVideoRef = useRef(null);
     const socketInstance = useRef(null);
@@ -151,7 +152,7 @@ const Room = ({ peerInstance, currentUserId}) => {
       </div>
       <BottomControls onLeave={() => {
             socketInstance?.current?.disconnect();
-            navigate(`/landing`);
+            window.location.href = "/landing";
         }} toggleMute={() => setMuted(!muted)} toggleVideoMute={() => setVideoMuted(!videoMuted)} muted={muted} videoMuted={videoMuted}/>
     </div>);
 };
