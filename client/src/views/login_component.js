@@ -13,6 +13,11 @@ export default class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount(){
+    if (localStorage.getItem("chat-app-user")) {
+       window.location.href = "/landing";
+     } //url
+   }
 
   handleSubmit(e) {
     const toastOptions = {

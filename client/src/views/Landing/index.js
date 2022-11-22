@@ -5,12 +5,22 @@ import { createRoomAPI } from "../../api/room";
 const Landing = ({ currentUserId }) => {
 
   useEffect(() => {
+    //eslint-disable-next-line
     if ((sessionStorage.length == "")) {
     window.location.href = "./sign-in";
   } //url
 }, []);
 
     const navigate = useNavigate()
+
+  //eslint-disable-next-line
+    const handleLogoutBtnClick = useCallback(async () => {
+      console.log('Logoutbtn clicked');
+      window.location.href = "./sign-in";
+      window.sessionStorage.clear();
+      window.localStorage.clear();
+    });
+
     const createRoom = useCallback(async () => {
         try {
             const roomInformation = await createRoomAPI(currentUserId);
@@ -35,7 +45,7 @@ const Landing = ({ currentUserId }) => {
              
         <form  className="box2" >
          
-         <button  type="submit" variant="primary"  >
+         <button  type="submit" variant="primary" onClick={handleLogoutBtnClick}>
          LogOut
           </button>   
           
