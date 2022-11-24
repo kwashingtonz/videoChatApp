@@ -115,7 +115,7 @@ router.post("/login-user", (req, res) => {
                                 sendOTPVerificationEmail(data, token, res)
 
                             }else{
-                                return res.json({ status: "ok", act: token })
+                                return res.json({ status: "ok", act: token , data: data[0]})
                             }    
                         }else{
                             return res.json({ status: "error", error: "Invalid Password" })

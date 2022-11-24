@@ -69,6 +69,7 @@ export default class Login extends Component {
           toast.success("Login Successful!", toastOptions);
 
           window.sessionStorage.setItem("token", data.act);
+          window.sessionStorage.setItem("userdata", JSON.stringify(data.data));
           window.sessionStorage.setItem("chat-app-user", JSON.stringify(data.act)); //url
 
           //window.location.href = "/landing";

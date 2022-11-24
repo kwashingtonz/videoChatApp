@@ -15,7 +15,7 @@ const Room = ({ peerInstance, currentUserId}) => {
     const [muted, setMuted] = useState(false);
     const [videoMuted, setVideoMuted] = useState(false);
     const [participants, setParticipants] = useState([]);
-    //const [name, setName] = useState("");
+    const [name, setName] = useState("");
     const { roomId } = useParams();
 
     const url = 'http://localhost:3000/rooms/';
@@ -76,6 +76,8 @@ const Room = ({ peerInstance, currentUserId}) => {
             return;
         }
         try {
+            const username = JSON.parse(window.sessionStorage.getItem("userdata"))
+            setName(username.fname+" "+username.lname)
             const mediaStream = await getUserMediaPromise({ video: true, audio: true });
             currentUserVideoRef.current.srcObject = mediaStream;
             currentUserVideoRef.current.play();
@@ -151,7 +153,7 @@ const Room = ({ peerInstance, currentUserId}) => {
     return (
     <div className="v-container">
     <div className="myId">
-      <strong>RoomId: {roomId}</strong>
+      <strong>{name} <br></br> RoomId: {roomId}</strong>
 
       <button  type="submit" variant="primary" onClick={handleCopy}>
          Copy ID
