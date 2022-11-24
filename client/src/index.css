@@ -389,7 +389,7 @@ html,
 .video-container {
   display: grid;
 	grid-template-columns: 1fr 1fr;
-	margin-top: 10rem;
+	margin-top: 7rem;
 	margin-left: 5rem;
   
 
