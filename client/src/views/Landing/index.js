@@ -23,39 +23,45 @@ const Landing = ({ currentUserId }) => {
       window.localStorage.clear();
     },[]);
 
-    const joinRoom = useCallback(async () => {
+    const joinCreateRoom = useCallback(async () => {
       try {
           
           if(roomId !== ""){
             navigate(`/rooms/${roomId}`);
           }else{
-            alert("Enter Room Id")
+            try {
+              const roomInformation = await createRoomAPI(currentUserId);
+              navigate(`/rooms/${roomInformation.roomId}`);
+          }
+          catch (error) {
+              console.error(error);
+          }
           }   
       }
       catch (error) {
           console.error(error);
       }
-  }, [roomId, navigate]);
+  }, [currentUserId,roomId, navigate]);
 
-    const createRoom = useCallback(async () => {
-        try {
-            const roomInformation = await createRoomAPI(currentUserId);
-            navigate(`/rooms/${roomInformation.roomId}`);
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }, [currentUserId, navigate]);
+    // const createRoom = useCallback(async () => {
+    //     try {
+    //         const roomInformation = await createRoomAPI(currentUserId);
+    //         navigate(`/rooms/${roomInformation.roomId}`);
+    //     }
+    //     catch (error) {
+    //         console.error(error);
+    //     }
+    // }, [currentUserId, navigate]);
 
     return (
       <div className="container">
       <h2>Meet Your Friends</h2> 
          <input type="text" placeholder="Enter Room Code" onChange={(e) =>setRoomId(e.target.value)}/>
          
-          <button onClick={createRoom} className="button is-success">Create a room</button>
+           {/* <button onClick={createRoom} className="button is-success">Create a room</button>  */}
 
-          <button type="submit" onClick={joinRoom}>
-            Join
+          <button type="submit" onClick={joinCreateRoom}>
+            Join/Create
           </button>
 
              

@@ -18,6 +18,17 @@ const Room = ({ peerInstance, currentUserId}) => {
     //const [name, setName] = useState("");
     const { roomId } = useParams();
 
+    const url = 'http://localhost:3000/rooms/';
+    const handleCopy=()=>{
+         navigator.clipboard.writeText(roomId)
+         alert("copied")
+    }
+
+    const CopyUrl=()=>{
+        navigator.clipboard.writeText(url+roomId)
+        alert("copied")
+   }
+
     const call = useCallback((userId) => {
         if (!peerInstance || !currentMediaStream.current) {
             return Promise.resolve(null);
@@ -137,10 +148,20 @@ const Room = ({ peerInstance, currentUserId}) => {
         }
     }, [muted]);
 
-    return (<div className="v-container">
-    <p className="myId">
+    return (
+    <div className="v-container">
+    <div className="myId">
       <strong>RoomId: {roomId}</strong>
-    </p>
+
+      <button  type="submit" variant="primary" onClick={handleCopy}>
+         Copy ID
+          </button>
+          <button   variant="primary" onClick={CopyUrl}  >
+         Copy Link
+          </button>
+    </div>
+
+    
   
     
     <div className='video-container'>
