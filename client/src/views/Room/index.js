@@ -153,7 +153,7 @@ const Room = ({ peerInstance, currentUserId}) => {
     return (
     <div className="v-container">
     <div className="myId">
-      <strong>{name} <br></br> RoomId: {roomId}</strong>
+      <strong>RoomId: {roomId}<br></br> {name} </strong>
 
       <button  type="submit" variant="primary" onClick={handleCopy}>
          Copy ID
