@@ -77,7 +77,12 @@ const Room = ({ peerInstance, currentUserId}) => {
         }
         try {
             const username = JSON.parse(window.sessionStorage.getItem("userdata"))
-            setName(username.fname+" "+username.lname)
+            if(username){
+                setName(username.fname+" "+username.lname)
+            }else{
+                setName("Guest")
+            }
+            
             const mediaStream = await getUserMediaPromise({ video: true, audio: true });
             currentUserVideoRef.current.srcObject = mediaStream;
             currentUserVideoRef.current.play();
